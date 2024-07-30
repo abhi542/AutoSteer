@@ -11,7 +11,7 @@ Conda for Python which resolves all the dependencies for machine learning.
 
 ### Setup 
 
-1) First, run `LoadData.py` which will get the dataset from the folder and store it in a pickle file.
+1) First, run `LoadData.py` which gets the dataset from the folder and stores it in a pickle file.
 2) Now you need to have the data, run `TrainModel.py` to load data from pickle and augment it. After this, the training process begins.
 3) For testing it on the video, run `DriveApp.py`
 
@@ -20,6 +20,6 @@ Conda for Python which resolves all the dependencies for machine learning.
 <img src="https://github.com/akshaybahadur21/BLOB/blob/master/final.gif">
 
 ### Contributors
-[![](Amith Vikram)](https://github.com/amithvikram10)
-(B V Rithika)[(https://github.com/rithikaveeresh)
-(Abhinav Bhatt)[(https://github.com/abhi542)
+[(Amith Vikram)](https://github.com/amithvikram10)< br / > 
+[(B V Rithika)](https://github.com/rithikaveeresh)< br / > 
+[(Abhinav Bhatt)](https://github.com/abhi542)< br / > 
