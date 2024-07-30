@@ -20,5 +20,6 @@ Conda for Python which resolves all the dependencies for machine learning.
 <img src="https://github.com/akshaybahadur21/BLOB/blob/master/final.gif">
 
 ### Contributors
-
- [!()[(https://github.com/amithvikram10)]]
+(Amith Vikram)[(https://github.com/amithvikram10)
+(B V Rithika)[(https://github.com/rithikaveeresh)]
+(Abhinav Bhatt)[(https://github.com/abhi542)]
