@@ -1,9 +1,9 @@
-from __future__ import division
 import cv2
 import os
+import sys
 import numpy as np
 import pickle
-import matplotlib.pyplot as plt
+import csv
 from itertools import islice
 
 LIMIT = 10000
@@ -21,12 +21,26 @@ def return_data():
     y = []
     features = []
 
-    with open(TRAIN_FILE) as fp:
-        for line in islice(fp, LIMIT):
-            path, angle = line.strip().split()
-            full_path = os.path.join(DATA_FOLDER, path)
-            X.append(full_path)
-            y.append(float(angle) * np.pi / 180)  # Changed scipy.pi to np.pi
+    target_dir = sys.argv[1] if len(sys.argv) > 1 else DATA_FOLDER
+    csv_path = os.path.join(target_dir, 'driving_log.csv')
+    
+    if not os.path.exists(csv_path):
+        print(f"Error: {csv_path} not found")
+        return
+        
+    logs = []
+    with open(csv_path, 'rt') as f:
+        reader = csv.reader(f)
+        for line in reader:
+            logs.append(line)
+        log_labels = logs.pop(0)  # Remove headers
+        
+    for i in range(min(LIMIT, len(logs))):
+        # Center image
+        img_path = logs[i][0]
+        full_path = target_dir + '/IMG' + (img_path.split('IMG')[1]).strip()
+        X.append(full_path)
+        y.append(float(logs[i][3]))
 
     for i in range(len(X)):
         img = cv2.imread(X[i])  # Using cv2.imread instead of plt.imread

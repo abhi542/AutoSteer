@@ -1,0 +1,23 @@
+# Virtual environments
+venv/
+venv_py310/
+
+# Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+
+# Models and Datasets
+*.h5
+*.keras
+models/
+driving_dataset/
+data.zip
+features*
+labels*
+AutoSteer/Autopilot_V2/features*
+AutoSteer/Autopilot_V2/labels*
+
+# macOS
+.DS_Store
+__MACOSX/

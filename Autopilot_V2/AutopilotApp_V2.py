@@ -1,14 +1,16 @@
 import numpy as np
 import os
+import sys
 import cv2
 from keras.models import load_model
 import keras
 
-# Enable unsafe deserialization
-keras.config.enable_unsafe_deserialization()
+
 
 # Load the trained model
-model = load_model(r'models/Autopilot_10.keras')  # Use .keras extension
+script_dir = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(script_dir, 'models', 'Autopilot_V2.h5')
+model = load_model(model_path)
 
 def keras_predict(model, image):
     processed = keras_process_image(image)
@@ -34,8 +36,11 @@ rows, cols = steer.shape
 smoothed_angle = 0
 
 # Load the video
-video_path = os.path.join('Autopilot', 'resources', 'test_video.mp4')   #Merceds auto driving
-# video_path = os.path.join('Autopilot', 'resources', 'run.mp4')
+if len(sys.argv) > 1:
+    video_path = sys.argv[1]
+else:
+    video_path = os.path.join('Autopilot', 'resources', 'challenge_video.mp4')
+
 cap = cv2.VideoCapture(video_path)
 if not cap.isOpened():
     print(f"Error: Video file not found. Check the file path: {video_path}")
@@ -53,7 +58,13 @@ while cap.isOpened():
     # Resize frame and display
     resized_frame = cv2.resize(frame, (600, 400), interpolation=cv2.INTER_AREA)
 
+    # Put the steering angle text on the frame
+    cv2.putText(resized_frame, f"Steering Angle: {steering_angle:.2f} deg", (15, 30),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2, cv2.LINE_AA)
     
+    cv2.putText(resized_frame, f"Model: AutoSteer V2 (Keras {keras.__version__})", (15, 65),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 1, cv2.LINE_AA)
+
     cv2.imshow('frame', resized_frame)
     
     # Smooth steering angle

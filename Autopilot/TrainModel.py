@@ -7,6 +7,7 @@ from keras.models import Sequential
 from keras.callbacks import ModelCheckpoint
 from keras.optimizers import Adam
 import pickle
+import os
 
 def keras_model():
     model = Sequential()
@@ -33,16 +34,21 @@ def keras_model():
     model.add(Dense(1))
 
     model.compile(optimizer=Adam(learning_rate=0.0001), loss="mse")
-    filepath = "Autopilot.keras"
+    
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    model_dir = os.path.join(script_dir, "models")
+    os.makedirs(model_dir, exist_ok=True)
+    filepath = os.path.join(model_dir, "Autopilot_V1.h5")
+    
     checkpoint1 = ModelCheckpoint(filepath, verbose=1, save_best_only=True)
     callbacks_list = [checkpoint1]
 
     return model, callbacks_list
 
 def loadFromPickle():
-    with open("features", "rb") as f:
+    with open("Autopilot/features_40.pkl", "rb") as f:
         features = np.array(pickle.load(f))
-    with open("labels", "rb") as f:
+    with open("Autopilot/labels_40.pkl", "rb") as f:
         labels = np.array(pickle.load(f))
 
     return features, labels
@@ -64,6 +70,11 @@ def main():
     model.fit(train_x, train_y, validation_data=(test_x, test_y), epochs=5, batch_size=64,
               callbacks=callbacks_list)
     model.summary()
-    model.save('Autopilot.keras')
+    
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    model_dir = os.path.join(script_dir, "models")
+    os.makedirs(model_dir, exist_ok=True)
+    final_filepath = os.path.join(model_dir, "Autopilot_V1.h5")
+    model.save(final_filepath)
 
 main()

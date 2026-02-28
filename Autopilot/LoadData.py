@@ -4,8 +4,8 @@ import csv
 import pickle
 import matplotlib.pyplot as plt
 
-features_directory = './data/'
-labels_file = './data/driving_log.csv'
+features_directory = 'driving_dataset/'
+labels_file = 'driving_dataset/driving_log.csv'
 
 
 def preprocess(img):
@@ -26,8 +26,12 @@ def data_loading(delta):
     for i in range(len(logs)):
         for j in range(3):
             img_path = logs[i][j]
-            img_path = features_directory + 'IMG' + (img_path.split('IMG')[1]).strip()
-            img = plt.imread(img_path)
+            img_path_formatted = features_directory + 'IMG' + (img_path.split('IMG')[1]).strip()
+            
+            img = cv2.imread(img_path_formatted)
+            if img is None:
+                continue
+                
             features.append(preprocess(img))
             if j == 0:
                 labels.append(float(logs[i][3]))
@@ -44,7 +48,7 @@ features, labels = data_loading(delta)
 features = np.array(features).astype('float32')
 labels = np.array(labels).astype('float32')
 
-with open("features_40", "wb") as f:
+with open("Autopilot/features_40.pkl", "wb") as f:
     pickle.dump(features, f, protocol=4)
-with open("labels", "wb") as f:
+with open("Autopilot/labels_40.pkl", "wb") as f:
     pickle.dump(labels, f, protocol=4)

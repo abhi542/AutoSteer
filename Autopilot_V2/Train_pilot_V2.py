@@ -5,6 +5,7 @@ from keras.models import Sequential
 from keras.callbacks import ModelCheckpoint
 import keras.backend as K
 import pickle
+import os
 
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
@@ -41,7 +42,12 @@ def keras_model(image_x, image_y):
     model.add(Dense(1))
 
     model.compile(optimizer='adam', loss="mse")
-    filepath = "models/Autopilot_10.keras"  # Change to .keras extension
+    
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    model_dir = os.path.join(script_dir, "models")
+    os.makedirs(model_dir, exist_ok=True)
+    filepath = os.path.join(model_dir, "Autopilot_V2.h5")
+    
     checkpoint = ModelCheckpoint(filepath, verbose=1, save_best_only=True)
     callbacks_list = [checkpoint]
 
@@ -65,7 +71,9 @@ def main():
     model.fit(train_x, train_y, validation_data=(test_x, test_y), epochs=3, batch_size=32, callbacks=callbacks_list)
     model.summary()  # Print the model summary
 
-    model.save('models\Autopilot_10.keras')  # Change to .keras extension
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    final_path = os.path.join(script_dir, 'models', 'Autopilot_V2.h5')
+    model.save(final_path)
 
 main()
 K.clear_session()
